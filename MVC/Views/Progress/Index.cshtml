@@ -1,0 +1,66 @@
+﻿@model IEnumerable<MVC.Models.Progress>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Progresses</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Habit.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HabitProgress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Habit.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Habit.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HabitProgress)
+                </td>
+                <td class="@(item.IsCompleted ? "completed" : "not-completed")">
+                    @Html.CheckBoxFor(modelItem => item.IsCompleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {id=item.ID}) |
+                    @Html.ActionLink("View", "Details", new {id=item.ID}) |
+                    @Html.ActionLink("Delete", "Delete", new {id=item.ID})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
