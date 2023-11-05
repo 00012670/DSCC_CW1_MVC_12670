@@ -1,15 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Models;
-using System.Collections.Generic;
 using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Text.Json.Serialization;
 using System.Text;
-using System.Threading.Tasks;
-using System;
 using Newtonsoft.Json;
-using System.Linq;
 
 namespace MVC.Controllers
 {
@@ -17,7 +11,7 @@ namespace MVC.Controllers
     {
         // The Definition of Base URL
         public const string baseUrl = "https://localhost:44378/";
-        readonly Uri ClientBaseAddress = new(baseUrl);
+        readonly Uri ClientBaseAddress = new Uri(baseUrl);
         readonly HttpClient clnt;
 
         // Constructor for initiating request to the given base URL publicly
@@ -42,7 +36,7 @@ namespace MVC.Controllers
         public async Task<ActionResult> Index()
         {
             // Creating the list of new Progress list
-            List<Progress> ProgressInfo = new();
+            List<Progress> ProgressInfo = new List<Progress>();
 
             HeaderClearing();
 
@@ -105,7 +99,7 @@ namespace MVC.Controllers
                 string createProgressInfo = JsonConvert.SerializeObject(progress);
 
                 // creating string content to pass as Http content later
-                StringContent stringContentInfo = new (createProgressInfo, Encoding.UTF8, "application/json");
+                StringContent stringContentInfo = new StringContent(createProgressInfo, Encoding.UTF8, "application/json");
 
                 // Making a Post request
                 HttpResponseMessage createHttpResponseMessage = clnt.PostAsync(clnt.BaseAddress + "api/Progress/", stringContentInfo).Result;
@@ -121,7 +115,7 @@ namespace MVC.Controllers
         public ActionResult Details(int id)
         {
             //Creating a Get Request to get single Progress
-            Progress progressDetails = new();
+            Progress progressDetails = new Progress();
 
             HeaderClearing();
 
@@ -188,7 +182,7 @@ namespace MVC.Controllers
                 string editProgressInfo = JsonConvert.SerializeObject(progress);
 
                 // creating string content to pass as Http content later
-                StringContent stringContentInfo = new(editProgressInfo, Encoding.UTF8, "application/json");
+                StringContent stringContentInfo = new StringContent(editProgressInfo, Encoding.UTF8, "application/json");
 
                 // Making a Put request
                 HttpResponseMessage editHttpResponseMessage = await clnt.PutAsync(clnt.BaseAddress + "api/Progress/" + id, stringContentInfo);
@@ -205,7 +199,7 @@ namespace MVC.Controllers
         // GET: ProgressController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            Progress progressDetails = new();
+            Progress progressDetails = new Progress();
             HeaderClearing();
             HttpResponseMessage response = await clnt.GetAsync(clnt.BaseAddress + "api/Progress/" + id);
 

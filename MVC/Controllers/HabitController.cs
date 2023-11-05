@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net.Http.Headers;
 using System.Text;
-using System;
 using MVC.Models;
 using Newtonsoft.Json;
-
-
 
 namespace MVC.Controllers
 {
