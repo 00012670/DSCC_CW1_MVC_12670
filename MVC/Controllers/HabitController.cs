@@ -10,7 +10,7 @@ namespace MVC.Controllers
     public class HabitController : Controller
     {
         // Base URL
-        public const string baseUrl = "https://localhost:44378/";
+        public const string baseUrl = "http://ec2-51-20-87-164.eu-north-1.compute.amazonaws.com/";
         readonly Uri ClientBaseAddress = new(baseUrl);
         readonly HttpClient clnt;
 
