@@ -9,7 +9,7 @@ namespace MVC.Controllers
 {
     public class HabitController : Controller
     {
-        // The Definition of Base URL
+        // Base URL
         public const string baseUrl = "https://localhost:44378/";
         readonly Uri ClientBaseAddress = new(baseUrl);
         readonly HttpClient clnt;
@@ -56,6 +56,25 @@ namespace MVC.Controllers
         }
 
 
+        // GET: HabitController/Details/
+        public ActionResult Details(int id)
+        {
+            //Creating a Get Request to get single Habit
+            Habit habitDetails = new();
+
+            HeaderClearing();
+
+            HttpResponseMessage httpResponseMessageDetails = clnt.GetAsync(clnt.BaseAddress + "api/Habit/" + id).Result;
+
+            // Checking for response state
+            if (httpResponseMessageDetails.IsSuccessStatusCode)
+            {
+                string detailsInfo = httpResponseMessageDetails.Content.ReadAsStringAsync().Result;
+
+                habitDetails = JsonConvert.DeserializeObject<Habit>(detailsInfo);
+            }
+            return View(habitDetails);
+        }
 
 
         // POST: HabitController/Create
@@ -87,26 +106,6 @@ namespace MVC.Controllers
         }
 
 
-        // GET: HabitController/Details/
-        public ActionResult Details(int id)
-        {
-            //Creating a Get Request to get single Habit
-            Habit habitDetails = new();
-
-            HeaderClearing();
-
-            HttpResponseMessage httpResponseMessageDetails = clnt.GetAsync(clnt.BaseAddress + "api/Habit/" + id).Result;
-
-            // Checking for response state
-            if (httpResponseMessageDetails.IsSuccessStatusCode)
-            {
-                string detailsInfo = httpResponseMessageDetails.Content.ReadAsStringAsync().Result;
-                habitDetails = JsonConvert.DeserializeObject<Habit>(detailsInfo);
-            }
-            return View(habitDetails);
-        }
-
-
         // GET: HabitController/Edit/
         public async Task<ActionResult> Edit(int id)
         {
@@ -115,7 +114,6 @@ namespace MVC.Controllers
 
             HeaderClearing();
 
-
             HttpResponseMessage httpResponseMessageDetails = await clnt.GetAsync(clnt.BaseAddress + "api/Habit/" + id);
 
             // Checking for response state
@@ -123,7 +121,9 @@ namespace MVC.Controllers
             {
                 // storing the response details received from web api 
                 string detailsInfo = httpResponseMessageDetails.Content.ReadAsStringAsync().Result;
+
                 habitDetails = JsonConvert.DeserializeObject<Habit>(detailsInfo);
+
                 // Create a SelectList object containing the repeat options
                 SelectList repeatOptions = new (new[] { "Daily", "Weekly", "Monthly" });
 
@@ -149,6 +149,7 @@ namespace MVC.Controllers
 
                 // Making a Put request
                 HttpResponseMessage editHttpResponseMessage = await clnt.PutAsync(clnt.BaseAddress + "api/Habit/" + id, stringContentInfo);
+                
                 if (editHttpResponseMessage.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -157,14 +158,13 @@ namespace MVC.Controllers
             return View(habit);
         }
 
-        // GET: HabitController/
+        // GET: HabitController/Delete
         public async Task<ActionResult> Delete(int id)
         {
             //Creating a Get Request to get single Habit
             Habit habitDetails = new();
 
             HeaderClearing();
-
 
             HttpResponseMessage httpResponseMessageDetails = await clnt.GetAsync(clnt.BaseAddress + "api/Habit/" + id);
 

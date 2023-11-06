@@ -94,8 +94,7 @@ namespace MVC.Controllers
         public ActionResult Create(Progress progress)
         {
             //  progress.Habit = new Habit { ID = progress.Habit.ID };
-            if (ModelState.IsValid)
-            {
+            
                 string createProgressInfo = JsonConvert.SerializeObject(progress);
 
                 // creating string content to pass as Http content later
@@ -106,8 +105,8 @@ namespace MVC.Controllers
                 if (createHttpResponseMessage.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
-                }
-            }
+               }
+           
             return View(progress);
         }
 
